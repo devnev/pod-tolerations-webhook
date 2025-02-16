@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment-apps-v1.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-tolerations-webhook
+  namespace: pod-tolerations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pod-tolerations-webhook
+  template:
+    metadata:
+      name: pod-tolerations-webhook
+      labels:
+        app.kubernetes.io/name: pod-tolerations-webhook
+    spec:
+      containers:
+        - name: webhook
+          image: devnev/pod-tolerations-webhook:latest
+          resources:
+            requests:
+              cpu: 0.01
+              memory: 20Mi
+            limits:
+              cpu: 0.1
+              memory: 30Mi
+          ports:
+            - name: https
+              containerPort: 8443
+            - name: status
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              port: status
+              path: /status
+          volumeMounts:
+            - mountPath: /etc/secrets/tls
+              name: tls-secrets
+      volumes:
+        - name: tls-secrets
+          secret:
+            secretName: pod-tolerations-webhook-certificate

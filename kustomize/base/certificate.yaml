@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pod-tolerations-webhook
+  namespace: pod-tolerations
+spec:
+  secretName: pod-tolerations-webhook-certificate
+  dnsNames:
+    - pod-tolerations-webhook.pod-tolerations.svc
+  issuerRef:
+    name: selfsigned

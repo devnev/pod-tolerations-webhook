@@ -1,0 +1,16 @@
+linters:
+  enable-all: true
+  disable:
+    - mnd
+    - lll
+    - exhaustruct
+    - exportloopref
+    - cyclop
+    - depguard
+    - perfsprint
+    - nlreturn
+    - gochecknoglobals
+    - funlen
+    - varnamelen
+    - wsl
+    - nonamedreturns

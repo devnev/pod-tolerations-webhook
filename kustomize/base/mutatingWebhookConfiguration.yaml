@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.32.2/mutatingwebhookconfiguration-admissionregistration-v1.json
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: pod-tolerations-webhook
+  annotations:
+    cert-manager.io/inject-ca-from: pod-tolerations/pod-tolerations-webhook
+webhooks:
+  - name: pod-tolerations-webhook.pod-tolerations.svc
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values: ["kube-system", "pod-tolerations"]
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE"]
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    failurePolicy: Ignore
+    clientConfig:
+      service:
+        namespace: pod-tolerations
+        name: pod-tolerations-webhook
+        path: /mutate

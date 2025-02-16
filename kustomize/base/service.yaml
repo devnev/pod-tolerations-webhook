@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/service-v1.json
+kind: Service
+apiVersion: v1
+metadata:
+  name: pod-tolerations-webhook
+  namespace: pod-tolerations
+spec:
+  selector:
+    app.kubernetes.io/name: pod-tolerations-webhook
+  ports:
+    - name: https
+      port: 443
+      targetPort: https
